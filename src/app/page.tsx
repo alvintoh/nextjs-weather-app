@@ -1,14 +1,17 @@
 "use client";
 
 import Container from "@/components/Container";
+import ForecastWeatherDetail from "@/components/ForecastWeatherDetail";
 import Navbar from "@/components/Navbar";
 import WeatherDetails from "@/components/WeatherDetails";
 import WeatherIcon from "@/components/WeatherIcon";
 import { convertKelvinToCelsius } from "@/utils/convertKelvinToCelsius";
+import { convertWindSpeed } from "@/utils/convertWindSpeed";
 import { getDayOrNightIcon } from "@/utils/getDayOrNightIcon";
+import { metersToKilometers } from "@/utils/metersToKilometers";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { format, parseISO } from "date-fns";
+import { format, fromUnixTime, parseISO } from "date-fns";
 import Image from "next/image";
 
 interface WeatherDetail {
@@ -157,7 +160,20 @@ export default function Home() {
               />
             </Container>
             <Container className="bg-yellow-300/80 px-6 gap-4 justify-between overflow-x-auto">
-              <WeatherDetails></WeatherDetails>
+              <WeatherDetails
+                visibility={metersToKilometers(firstData?.visibility ?? 10000)}
+                airPressure={`${firstData?.main.pressure} hPa`}
+                humidity={`${firstData?.main.humidity}%`}
+                windSpeed={convertWindSpeed(firstData?.wind.speed ?? 7.02)}
+                sunrise={format(
+                  fromUnixTime(data?.city.sunrise ?? 1707779805),
+                  "H:mm"
+                )}
+                sunset={format(
+                  fromUnixTime(data?.city.sunset ?? 1707823265),
+                  "H:mm"
+                )}
+              ></WeatherDetails>
             </Container>
             {/* right */}
           </div>
