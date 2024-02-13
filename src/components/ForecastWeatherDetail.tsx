@@ -4,8 +4,6 @@ import WeatherDetails, { WeatherDetailProps } from "./WeatherDetails";
 import WeatherIcon from "./WeatherIcon";
 import { convertKelvinToCelsius } from "@/utils/convertKelvinToCelsius";
 
-type Props = {};
-
 export interface ForecastWeatherDetailProps extends WeatherDetailProps {
   weatherIcon: string;
   date: string;
@@ -34,11 +32,23 @@ export default function ForecastWeatherDetail(
     <Container className="gap-4">
       {/* left */}
       <section className=" flex gap-4 items-center px-4">
-        <WeatherIcon iconName={weatherIcon} />
-        <p>{date}</p>
-        <p className="text-sm">{day}</p>
+        <div className=" flex flex-col gap-1 items-center">
+          <WeatherIcon iconName={weatherIcon} />
+          <p>{date}</p>
+          <p className="text-sm">{day}</p>
+        </div>
+        {/* */}
         <div className="flex flex-col px-4">
           <span className="text-5xl">{convertKelvinToCelsius(temp ?? 0)}°</span>
+          <p className="text-sm space-x-1 whitespace-nowrap">
+            <span> Feels like</span>
+            <span>{convertKelvinToCelsius(feels_like ?? 0)}°</span>
+          </p>
+          <p className="text-xs space-x-2">
+            <span>{convertKelvinToCelsius(temp_min ?? 0)}°↓ </span>
+            <span>{convertKelvinToCelsius(temp_max ?? 0)}°↑</span>
+          </p>
+          <p className="capitalize">{description}</p>
         </div>
       </section>
       {/* right */}
